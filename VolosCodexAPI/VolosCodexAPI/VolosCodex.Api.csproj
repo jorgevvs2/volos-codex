@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>997e749b-ce4b-4c93-9862-5dbf83060dbc</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VolosCodex.Application\VolosCodex.Application.csproj" />
+    <ProjectReference Include="..\VolosCodex.Domain\VolosCodex.Domain.csproj" />
+    <ProjectReference Include="..\VolosCodex.Infrastructure\VolosCodex.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
