@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  voloscodex-api:
+    image: voloscodex-api
+    build:
+      context: .
+      dockerfile: VolosCodexAPI/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Redis:ConnectionString=redis:6379
+      - Gemini:ApiKey=${GEMINI_API_KEY}
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
