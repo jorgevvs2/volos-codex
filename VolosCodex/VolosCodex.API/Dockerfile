@@ -12,19 +12,23 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["VolosCodexAPI/VolosCodexAPI.csproj", "VolosCodexAPI/"]
-RUN dotnet restore "./VolosCodexAPI/VolosCodexAPI.csproj"
+COPY ["VolosCodex.API/VolosCodex.Api.csproj", "VolosCodex.API/"]
+COPY ["VolosCodex.Application/VolosCodex.Application.csproj", "VolosCodex.Application/"]
+COPY ["VolosCodex.Domain/VolosCodex.Domain.csproj", "VolosCodex.Domain/"]
+COPY ["VolosCodex.Infrastructure/VolosCodex.Infrastructure.csproj", "VolosCodex.Infrastructure/"]
+RUN dotnet restore "./VolosCodex.API/VolosCodex.Api.csproj"
 COPY . .
-WORKDIR "/src/VolosCodexAPI"
-RUN dotnet build "./VolosCodexAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/VolosCodex.API"
+RUN dotnet build "./VolosCodex.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./VolosCodexAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./VolosCodex.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "VolosCodexAPI.dll"]
+COPY ["VolosCodex.Domain/Books", "/app/Books"]
+ENTRYPOINT ["dotnet", "VolosCodex.Api.dll"]

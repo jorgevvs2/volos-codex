@@ -44,13 +44,6 @@ namespace VolosCodex.Application.Services
             return await _questionRepository.AskQuestionAsync(fullPrompt, system);
         }
 
-        public async Task<string> GetSearchKeywordAsync(string userDescription)
-        {
-            _logger.LogInformation("Generating search keyword prompt for description: {Description}", userDescription);
-            var searchPrompt = _promptBuilder.GetSearchKeywordPrompt();
-            var fullPrompt = $"{searchPrompt}\n\nDescrição do Usuário: {userDescription}";
-            
-            return await _questionRepository.GetSearchKeywordAsync(fullPrompt);
-        }
+        // Method removed as we are now using local embeddings for search
     }
 }

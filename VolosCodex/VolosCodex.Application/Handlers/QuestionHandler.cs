@@ -23,20 +23,12 @@ namespace VolosCodex.Application.Handlers
 
             try
             {
-                // 1. Extract keyword from user question
-                _logger.LogInformation("Extracting keyword from user question...");
-                var keyword = await _promptService.GetSearchKeywordAsync(userQuestion);
-                _logger.LogInformation("Keyword extracted: {Keyword}", keyword);
-
-                // 2. Search for relevant pages in books
-                // Clean up the keyword (remove quotes if any)
-                keyword = keyword.Trim().Trim('"').Trim('\'');
-                
-                _logger.LogInformation("Searching for keyword '{Keyword}' in books...", keyword);
-                var relevantPages = await _bookSearchService.SearchKeywordInBooksAsync(keyword);
+                // 1. Search for relevant pages in books using local embeddings
+                _logger.LogInformation("Searching for relevant context in books using embeddings...");
+                var relevantPages = await _bookSearchService.SearchKeywordInBooksAsync(userQuestion);
                 _logger.LogInformation("Found {Count} relevant pages.", relevantPages.Count);
 
-                // 3. Send final prompt with context
+                // 2. Send final prompt with context
                 _logger.LogInformation("Sending final prompt with context to AI...");
                 var answer = await _promptService.SendQuestionPromptAsync(userQuestion, system, relevantPages);
                 _logger.LogInformation("Received answer from AI.");

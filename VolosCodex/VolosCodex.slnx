@@ -4,10 +4,10 @@
     <File Path=".env" />
     <File Path=".gitignore" />
     <File Path="docker-compose.yml" />
+    <Project Path="VolosCodex.API/VolosCodex.Api.csproj" />
     <Project Path="VolosCodex.Application/VolosCodex.Application.csproj" />
     <Project Path="VolosCodex.Domain/VolosCodex.Domain.csproj" />
     <Project Path="VolosCodex.Infrastructure/VolosCodex.Infrastructure.csproj" />
-    <Project Path="VolosCodexAPI/VolosCodex.Api.csproj" />
   </Folder>
   <Folder Name="/tests/" />
 </Solution>
