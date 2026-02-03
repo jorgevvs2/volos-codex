@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="PdfPig" Version="0.1.13" />
+    <PackageReference Include="SmartComponents.LocalEmbeddings" Version="0.1.0-preview10148" />
   </ItemGroup>
 
   <ItemGroup>

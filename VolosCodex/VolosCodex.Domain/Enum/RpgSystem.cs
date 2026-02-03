@@ -6,6 +6,5 @@ namespace VolosCodex.Domain
         DnD5,
         Daggerheart,
         ReinosDeFerro
-        
     }
 }

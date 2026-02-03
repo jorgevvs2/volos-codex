@@ -1,6 +1,0 @@
-.env
-.vs/
-.idea/
-bin/
-obj/
-*.user

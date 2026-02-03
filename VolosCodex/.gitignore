@@ -1,0 +1,9 @@
+.env
+.vs/
+.idea/
+bin/
+obj/
+*.user
+!/.env
+/.env
+/VolosCodex.Domain/Books/
