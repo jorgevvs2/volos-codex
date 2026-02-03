@@ -2,8 +2,20 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-USER $APP_UID
+USER root
+# Install libgomp1 which is often required by OnnxRuntime on Linux
+RUN apt-get update && apt-get install -y libgomp1
 WORKDIR /app
+# Create directories and set permissions
+# We set 777 for LocalEmbeddingsModel to ensure the app can write/download the model regardless of user context
+RUN mkdir -p /app/Books /app/LocalEmbeddingsModel && \
+    chmod -R 777 /app/LocalEmbeddingsModel
+
+# Set HOME to /app to ensure any user-level caching goes to a writable location
+ENV HOME=/app
+
+# Temporarily running as root to bypass permission issues with OnnxRuntime/LocalEmbeddings
+# USER $APP_UID
 EXPOSE 8080
 EXPOSE 8081
 

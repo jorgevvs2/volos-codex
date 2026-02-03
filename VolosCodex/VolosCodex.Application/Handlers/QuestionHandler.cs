@@ -23,9 +23,9 @@ namespace VolosCodex.Application.Handlers
 
             try
             {
-                // 1. Search for relevant pages in books using local embeddings
-                _logger.LogInformation("Searching for relevant context in books using embeddings...");
-                var relevantPages = await _bookSearchService.SearchKeywordInBooksAsync(userQuestion);
+                // 1. Search for relevant pages in books using local embeddings, filtered by the requested system
+                _logger.LogInformation("Searching for relevant context in books using embeddings for system {System}...", system);
+                var relevantPages = await _bookSearchService.SearchKeywordInBooksAsync(userQuestion, system);
                 _logger.LogInformation("Found {Count} relevant pages.", relevantPages.Count);
 
                 // 2. Send final prompt with context
