@@ -16,3 +16,4 @@ obj/
 /VolosCodex.Domain/Books/dnd5e_gdm.pdf
 /VolosCodex.Domain/Books/dnd5e_costadaespada.pdf
 /VolosCodex.Domain/Books/dh.pdf
+!/VolosCodex.Domain/Books/
