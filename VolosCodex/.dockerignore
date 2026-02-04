@@ -14,7 +14,6 @@
 **/azds.yaml
 **/bin
 **/charts
-**/docker-compose*
 **/Dockerfile*
 **/node_modules
 **/npm-debug.log
@@ -27,4 +26,4 @@ README.md
 !.git/HEAD
 !.git/config
 !.git/packed-refs
-!.git/refs/heads/**
+!.git/refs/heads/**/docker-compose.yml

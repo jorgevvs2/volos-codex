@@ -11,13 +11,17 @@ services:
       - "8081:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - Redis:ConnectionString=redis:6379
-      - Gemini:ApiKey=${GEMINI_API_KEY}
+      # Use double underscore for nested configuration in Linux
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=voloscodex;Username=postgres;Password=volos_secret
+      - Redis__ConnectionString=redis:6379
+      - Gemini__ApiKey=${GEMINI_API_KEY}
+      - Authentication__Google__ClientId=${GOOGLE_CLIENT_ID}
     volumes:
       - ./VolosCodex.Domain/Books:/app/Books
       - embeddings_model_cache:/app/LocalEmbeddingsModel
     depends_on:
       - redis
+      - postgres
 
   voloscodex-front:
     image: voloscodex-front
@@ -36,6 +40,27 @@ services:
     volumes:
       - redis-data:/data
 
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=volos_secret
+      - POSTGRES_DB=voloscodex
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - voloscodex-front
+
 volumes:
   redis-data:
   embeddings_model_cache:
+  postgres-data:
