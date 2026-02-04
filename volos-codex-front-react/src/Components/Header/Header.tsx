@@ -5,6 +5,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../../Contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   activeSection?: string;
@@ -15,6 +16,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ activeSection = 'chat', toggleColorMode, mode }) => {
   const { user, handleLoginSuccess, logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -29,6 +31,24 @@ const Header: React.FC<HeaderProps> = ({ activeSection = 'chat', toggleColorMode
     logout();
   };
 
+  const getButtonStyle = (sectionName: string) => ({
+    borderRadius: 4,
+    textTransform: 'none',
+    fontWeight: 500,
+    display: { xs: 'none', sm: 'block' },
+    ...(activeSection === sectionName && {
+      bgcolor: mode === 'light' ? 'primary.light' : 'primary.main',
+      color: mode === 'light' ? 'primary.contrastText' : 'background.default',
+      '&:hover': {
+        bgcolor: mode === 'light' ? 'primary.main' : 'primary.light',
+        color: mode === 'light' ? 'white' : 'background.default',
+      }
+    }),
+    ...(activeSection !== sectionName && {
+      color: 'text.secondary',
+    })
+  });
+
   return (
     <AppBar 
       position="sticky" 
@@ -41,7 +61,10 @@ const Header: React.FC<HeaderProps> = ({ activeSection = 'chat', toggleColorMode
       }}
     >
       <Toolbar>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1 }}>
+        <Box 
+          sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1, cursor: 'pointer' }}
+          onClick={() => navigate('/')}
+        >
           <AutoStoriesIcon sx={{ color: 'primary.main', fontSize: 32 }} />
           <Typography variant="h6" component="div" sx={{ color: 'text.primary' }}>
             Volo's Codex
@@ -52,25 +75,19 @@ const Header: React.FC<HeaderProps> = ({ activeSection = 'chat', toggleColorMode
           <Button 
             variant={activeSection === 'chat' ? 'contained' : 'text'}
             disableElevation
-            sx={{ 
-              borderRadius: 4,
-              textTransform: 'none',
-              fontWeight: 500,
-              display: { xs: 'none', sm: 'block' },
-              ...(activeSection === 'chat' && {
-                bgcolor: mode === 'light' ? 'primary.light' : 'primary.main',
-                color: mode === 'light' ? 'primary.contrastText' : 'background.default',
-                '&:hover': {
-                  bgcolor: mode === 'light' ? 'primary.main' : 'primary.light',
-                  color: mode === 'light' ? 'white' : 'background.default',
-                }
-              }),
-              ...(activeSection !== 'chat' && {
-                color: 'text.secondary',
-              })
-            }}
+            onClick={() => navigate('/chat')}
+            sx={getButtonStyle('chat')}
           >
             Chat with AI
+          </Button>
+
+          <Button 
+            variant={activeSection === 'logs' ? 'contained' : 'text'}
+            disableElevation
+            onClick={() => navigate('/logs')}
+            sx={getButtonStyle('logs')}
+          >
+            Session Logs
           </Button>
           
           <IconButton sx={{ ml: 1, mr: 1 }} onClick={toggleColorMode} color="inherit">

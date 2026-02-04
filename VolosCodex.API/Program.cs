@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,7 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
+
 builder.Services.AddOpenApi();
 
 // Add CORS
@@ -78,6 +84,8 @@ builder.Services.AddScoped<GeminiExternalService>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 
 // Application
 builder.Services.AddScoped<BooksReader>();
@@ -86,6 +94,8 @@ builder.Services.AddScoped<PromptService>();
 builder.Services.AddScoped<BookSearchService>();
 builder.Services.AddScoped<QuestionHandler>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<CampaignService>();
+builder.Services.AddScoped<SessionService>();
 
 var app = builder.Build();
 
