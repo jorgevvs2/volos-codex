@@ -89,6 +89,8 @@ namespace VolosCodex.Application.Services
                     continue;
                 }
 
+                _logger.LogInformation("Indexing file: {FileName} as system: {System}", fileName, system);
+
                 var pages = await _booksReader.ReadPdfPagesAsync(file);
                 int pageIndex = 1;
 
@@ -113,14 +115,23 @@ namespace VolosCodex.Application.Services
 
         private RpgSystem? DetermineSystemFromFileName(string fileName)
         {
-            // Simple heuristic: check if filename contains the enum name (case-insensitive)
-            // You might want to make this more robust or configurable
             var lowerFileName = fileName.ToLowerInvariant();
 
-            if (lowerFileName.Contains("dnd2024")) return RpgSystem.DnD2024;
-            if (lowerFileName.Contains("dnd5e")) return RpgSystem.DnD5;
-            if (lowerFileName.Contains("dh")) return RpgSystem.Daggerheart;
-            if (lowerFileName.Contains("reinos")) return RpgSystem.ReinosDeFerro;
+            // DnD 2024 (e.g., dnd2024_phb.pdf, dnd2024_dmg.pdf)
+            if (lowerFileName.Contains("dnd2024") || lowerFileName.StartsWith("dnd24"))
+                return RpgSystem.DnD2024;
+
+            // DnD 5e (e.g., dnd5e_phb.pdf, dnd5_xanathar.pdf)
+            if (lowerFileName.Contains("dnd5e") || lowerFileName.Contains("dnd5"))
+                return RpgSystem.DnD5;
+
+            // Daggerheart (e.g., dh_playtest.pdf, daggerheart_core.pdf)
+            if (lowerFileName.Contains("daggerheart") || lowerFileName.StartsWith("dh"))
+                return RpgSystem.Daggerheart;
+
+            // Reinos de Ferro (e.g., reinos_core.pdf, ikrpg.pdf)
+            if (lowerFileName.Contains("reinos") || lowerFileName.Contains("ironkingdoms") || lowerFileName.StartsWith("ik"))
+                return RpgSystem.ReinosDeFerro;
 
             return null;
         }

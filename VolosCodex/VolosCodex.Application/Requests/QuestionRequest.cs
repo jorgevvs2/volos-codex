@@ -10,4 +10,7 @@ public class QuestionRequest
     
     [JsonPropertyName("sistema")]
     public RpgSystem System { get; set; }
+
+    [JsonPropertyName("sessionId")]
+    public Guid? SessionId { get; set; }
 }

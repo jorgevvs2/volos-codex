@@ -6,4 +6,13 @@ obj/
 *.user
 !/.env
 /.env
-/VolosCodex.Domain/Books/
+/VolosCodex.Domain/Books/!/volos-codex-front-react/.env
+!/VolosCodex.Domain/Books/
+/VolosCodex.Domain/Books/dnd2024_ldj.pdf
+/VolosCodex.Domain/Books/dnd5e_mm.pdf
+/VolosCodex.Domain/Books/reinos.pdf
+/VolosCodex.Domain/Books/dnd5e_ldj.pdf
+/VolosCodex.Domain/Books/dnd5e_gdv.pdf
+/VolosCodex.Domain/Books/dnd5e_gdm.pdf
+/VolosCodex.Domain/Books/dnd5e_costadaespada.pdf
+/VolosCodex.Domain/Books/dh.pdf
