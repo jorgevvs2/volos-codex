@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, IconButton, Avatar, Menu, MenuItem, Tooltip, useTheme } from '@mui/material';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -17,6 +17,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection = 'chat', toggleColorMode
   const { user, handleLoginSuccess, logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -33,63 +34,66 @@ const Header: React.FC<HeaderProps> = ({ activeSection = 'chat', toggleColorMode
 
   const getButtonStyle = (sectionName: string) => ({
     borderRadius: 4,
-    textTransform: 'none',
-    fontWeight: 500,
+    textTransform: 'uppercase',
+    fontWeight: 700,
+    letterSpacing: '0.05em',
+    mx: 1,
     display: { xs: 'none', sm: 'block' },
-    ...(activeSection === sectionName && {
-      bgcolor: mode === 'light' ? 'primary.light' : 'primary.main',
-      color: mode === 'light' ? 'primary.contrastText' : 'background.default',
+    ...(activeSection === sectionName ? {
+      bgcolor: 'primary.main',
+      color: 'primary.contrastText',
       '&:hover': {
-        bgcolor: mode === 'light' ? 'primary.main' : 'primary.light',
-        color: mode === 'light' ? 'white' : 'background.default',
+        bgcolor: 'primary.dark',
+      }
+    } : {
+      color: 'text.primary',
+      '&:hover': {
+        bgcolor: 'action.hover',
+        color: 'primary.main',
       }
     }),
-    ...(activeSection !== sectionName && {
-      color: 'text.secondary',
-    })
   });
 
   return (
     <AppBar 
       position="sticky" 
-      color="inherit" 
-      elevation={0} 
+      color="default" 
+      elevation={4} 
       sx={{ 
-        borderBottom: '1px solid',
-        borderColor: 'divider',
-        bgcolor: 'background.paper'
+        bgcolor: 'background.paper',
+        borderBottom: `2px solid ${theme.palette.primary.main}`,
       }}
     >
-      <Toolbar>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Box 
-          sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1, cursor: 'pointer' }}
+          sx={{ display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer' }}
           onClick={() => navigate('/')}
         >
-          <AutoStoriesIcon sx={{ color: 'primary.main', fontSize: 32 }} />
-          <Typography variant="h6" component="div" sx={{ color: 'text.primary' }}>
+          <AutoStoriesIcon sx={{ color: 'primary.main', fontSize: 36 }} />
+          <Typography variant="h5" component="div" sx={{ color: 'text.primary', fontWeight: 700 }}>
             Volo's Codex
           </Typography>
         </Box>
         
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Button 
             variant={activeSection === 'chat' ? 'contained' : 'text'}
-            disableElevation
             onClick={() => navigate('/chat')}
             sx={getButtonStyle('chat')}
           >
-            Chat with AI
+            Chat
           </Button>
 
           <Button 
             variant={activeSection === 'logs' ? 'contained' : 'text'}
-            disableElevation
             onClick={() => navigate('/logs')}
             sx={getButtonStyle('logs')}
           >
-            Session Logs
+            Campaigns
           </Button>
           
+          <Box sx={{ width: '1px', height: '24px', bgcolor: 'divider', mx: 2 }} />
+
           <IconButton sx={{ ml: 1, mr: 1 }} onClick={toggleColorMode} color="inherit">
             {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
@@ -99,7 +103,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection = 'chat', toggleColorMode
             <Box>
               <Tooltip title={user.name}>
                 <IconButton onClick={handleMenu} sx={{ p: 0, ml: 1 }}>
-                  <Avatar alt={user.name} src={user.picture} />
+                  <Avatar alt={user.name} src={user.picture} sx={{ border: `2px solid ${theme.palette.primary.main}` }} />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -116,8 +120,14 @@ const Header: React.FC<HeaderProps> = ({ activeSection = 'chat', toggleColorMode
                 }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
+                PaperProps={{
+                  sx: {
+                    bgcolor: 'background.paper',
+                    border: `1px solid ${theme.palette.divider}`,
+                  }
+                }}
               >
-                <MenuItem disabled>{user.email}</MenuItem>
+                <MenuItem disabled sx={{ opacity: 0.7, fontSize: '0.8rem' }}>{user.email}</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </Box>
