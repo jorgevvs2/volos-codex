@@ -5,98 +5,129 @@ export const getTheme = (mode: PaletteMode) => createTheme({
     mode,
     ...(mode === 'light'
       ? {
-          // Light Mode Colors
+          // Light Mode (Parchment/Scroll style)
           primary: {
-            main: '#0b57d0', // Google Blue
-            light: '#d3e3fd',
-            contrastText: '#041e49',
+            main: '#8B0000', // Dark Red / Crimson
+            light: '#B22222',
+            dark: '#500000',
+            contrastText: '#FFF8DC',
           },
           secondary: {
-            main: '#c4eed0', // Light Green
-            contrastText: '#0f5132',
+            main: '#C5A059', // Gold / Bronze
+            light: '#E6C27A',
+            dark: '#947636',
+            contrastText: '#1A1A1D',
           },
           background: {
-            default: '#f0f4f9',
-            paper: '#ffffff',
+            default: '#F5E6D3', // Parchment
+            paper: '#FFF8DC',   // Cornsilk
           },
           text: {
-            primary: '#1f1f1f',
-            secondary: '#444746',
+            primary: '#2F1B0C', // Dark Brown
+            secondary: '#5C4033', // Lighter Brown
           },
+          divider: '#D2B48C', // Tan
         }
       : {
-          // Dark Mode Colors
+          // Dark Mode (Dungeon/Mystic style)
           primary: {
-            main: '#a8c7fa', // Lighter Blue for Dark Mode
-            light: '#0842a0', // Darker blue for backgrounds
-            contrastText: '#041e49', // Dark text on light primary
+            main: '#FF6347', // Tomato Red (brighter for dark mode)
+            light: '#FF8C75',
+            dark: '#B22222',
+            contrastText: '#1A1A1D',
           },
           secondary: {
-            main: '#1b3a2d', // Dark Green container
-            contrastText: '#c4eed0', // Light text
+            main: '#FFD700', // Gold
+            light: '#FFE44D',
+            dark: '#B8860B',
+            contrastText: '#1A1A1D',
           },
           background: {
-            default: '#131314', // Gemini Dark Background
-            paper: '#1e1f20',   // Slightly lighter for cards
+            default: '#121212', // Very Dark Grey
+            paper: '#1E1E1E',   // Dark Grey
           },
           text: {
-            primary: '#e3e3e3',
-            secondary: '#c4c7c5',
+            primary: '#E0E0E0', // Off-white
+            secondary: '#A0A0A0', // Grey
           },
+          divider: '#333333',
         }),
   },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-    h1: { fontFamily: '"Cinzel", serif', fontWeight: 700 },
-    h2: { fontFamily: '"Cinzel", serif', fontWeight: 700 },
+    h1: { fontFamily: '"Cinzel", serif', fontWeight: 700, letterSpacing: '0.05em' },
+    h2: { fontFamily: '"Cinzel", serif', fontWeight: 700, letterSpacing: '0.03em' },
     h3: { fontFamily: '"Cinzel", serif', fontWeight: 600 },
     h4: { fontFamily: '"Cinzel", serif', fontWeight: 600 },
     h5: { fontFamily: '"Cinzel", serif', fontWeight: 600 },
     h6: { fontFamily: '"Cinzel", serif', fontWeight: 600 },
     subtitle1: {
-      fontFamily: '"Inter", sans-serif',
+      fontFamily: '"Cinzel", serif',
       fontWeight: 600,
     },
     button: {
-      fontFamily: '"Inter", sans-serif',
-      fontWeight: 600,
-      textTransform: 'none',
+      fontFamily: '"Cinzel", serif',
+      fontWeight: 700,
+      textTransform: 'uppercase',
+      letterSpacing: '0.05em',
     },
     body1: {
       fontFamily: '"Inter", sans-serif',
       lineHeight: 1.6,
+      fontSize: '1rem',
     },
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 8, // Slightly sharper corners for a classic feel
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 20,
+          borderRadius: 4, // Classic RPG button shape
+          padding: '8px 24px',
+        },
+        contained: {
+          boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+          '&:hover': {
+            boxShadow: '0 6px 8px rgba(0,0,0,0.4)',
+          },
         },
       },
     },
     MuiPaper: {
       styleOverrides: {
+        root: {
+          backgroundImage: 'none', // Remove default gradient in dark mode
+        },
         rounded: {
-          borderRadius: 16,
+          borderRadius: 8,
+        },
+        elevation1: {
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)', // Subtle border effect
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderBottom: '2px solid', // Thicker border for header
         },
       },
     },
     MuiCssBaseline: {
       styleOverrides: (themeParam) => ({
         body: {
-          scrollbarColor: themeParam.palette.mode === 'dark' ? '#444746 #1e1f20' : '#909090 #f0f4f9',
+          scrollbarColor: themeParam.palette.mode === 'dark' ? '#555 #1e1f20' : '#D2B48C #F5E6D3',
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
             backgroundColor: 'transparent',
-            width: '8px',
+            width: '10px',
           },
           '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
             borderRadius: 8,
-            backgroundColor: themeParam.palette.mode === 'dark' ? '#444746' : '#909090',
+            backgroundColor: themeParam.palette.mode === 'dark' ? '#555' : '#D2B48C',
             minHeight: 24,
+            border: `2px solid ${themeParam.palette.background.default}`,
           },
         },
         code: {
