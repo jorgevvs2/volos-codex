@@ -9,6 +9,13 @@ namespace VolosCodex.Application.Requests
         public int Amount { get; set; }
     }
 
+    public class UpdateLogRequest
+    {
+        public string CharacterName { get; set; } = string.Empty;
+        public string Action { get; set; } = string.Empty;
+        public int Amount { get; set; }
+    }
+
     public class EndSessionRequest
     {
         public Guid CampaignId { get; set; }

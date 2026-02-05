@@ -48,6 +48,18 @@ namespace VolosCodex.Application.Services
             await _sessionRepository.AddLogAsync(log);
         }
 
+        public async Task UpdateLogAsync(Guid logId, string characterName, string action, int amount)
+        {
+            var log = await _sessionRepository.GetLogByIdAsync(logId);
+            if (log != null)
+            {
+                log.CharacterName = characterName;
+                log.Action = action;
+                log.Amount = amount;
+                await _sessionRepository.UpdateLogAsync(log);
+            }
+        }
+
         public async Task EndSessionAsync(Guid campaignId, int sessionNumber, string title, string description)
         {
             var session = await GetOrCreateSessionAsync(campaignId, sessionNumber);

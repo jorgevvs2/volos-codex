@@ -105,11 +105,20 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<VolosCodexDbContext>();
     try
     {
+        Console.WriteLine("Applying migrations...");
         db.Database.Migrate();
+        Console.WriteLine("Migrations applied successfully.");
+
+        // Seed Database
+        Console.WriteLine("Seeding database...");
+        DbSeeder.SeedAsync(db).Wait();
+        Console.WriteLine("Database seeded.");
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Migration failed: {ex.Message}");
+        Console.WriteLine($"CRITICAL ERROR: Migration/Seeding failed: {ex.Message}");
+        // Rethrow to stop the application if DB is not ready
+        throw;
     }
 }
 
