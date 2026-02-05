@@ -14,6 +14,8 @@ namespace VolosCodex.Domain.Interfaces
         Task AddLogAsync(SessionLog log);
         Task<IEnumerable<SessionLog>> GetLogsAsync(Guid sessionId);
         Task<IEnumerable<SessionLog>> GetLogsByCampaignAsync(Guid campaignId);
+        Task<SessionLog?> GetLogByIdAsync(Guid id); // New method to fetch log for update
+        Task UpdateLogAsync(SessionLog log); // New method
         Task DeleteLogAsync(Guid id);
     }
 }

@@ -89,9 +89,21 @@ const SessionDetailsPage: React.FC = () => {
 
   const handleSaveEdit = async () => {
     if (editingLog) {
-      alert("Update functionality not implemented on backend yet.");
-      setOpenEditDialog(false);
-      setEditingLog(null);
+      try {
+        await ApiService.updateLog(
+          editingLog.id,
+          editingLog.characterName,
+          editingLog.action,
+          editingLog.amount,
+          token || undefined
+        );
+        fetchData(); // Refresh logs
+        setOpenEditDialog(false);
+        setEditingLog(null);
+      } catch (err) {
+        console.error(err);
+        alert("Failed to update log.");
+      }
     }
   };
 
@@ -120,7 +132,7 @@ const SessionDetailsPage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4, height: '100%', overflowY: 'auto' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Button 
           startIcon={<ArrowBackIcon />} 
@@ -150,8 +162,8 @@ const SessionDetailsPage: React.FC = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <TableContainer component={Paper}>
-          <Table>
+        <TableContainer component={Paper} sx={{ maxHeight: 'calc(100% - 150px)', overflowY: 'auto' }}>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell>Character</TableCell>

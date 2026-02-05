@@ -60,7 +60,6 @@ const getHeaders = (token?: string) => {
 export const ApiService = {
   // --- Campaigns ---
   getCampaigns: async (guildId: string, token?: string): Promise<Campaign[]> => {
-    // Modified to fetch ALL campaigns regardless of guildId
     const response = await fetch(`${BASE_URL}/Campaign/all`, {
       headers: getHeaders(token),
     });
@@ -167,6 +166,21 @@ export const ApiService = {
       body: JSON.stringify({ campaignId, sessionNumber, characterName, action, amount }),
     });
     if (!response.ok) throw new Error('Failed to add log');
+  },
+
+  updateLog: async (
+    logId: string,
+    characterName: string,
+    action: string,
+    amount: number,
+    token?: string
+  ): Promise<void> => {
+    const response = await fetch(`${BASE_URL}/Session/log/${logId}`, {
+      method: 'PUT',
+      headers: getHeaders(token),
+      body: JSON.stringify({ characterName, action, amount }),
+    });
+    if (!response.ok) throw new Error('Failed to update log');
   },
 
   deleteLog: async (logId: string, token?: string): Promise<void> => {

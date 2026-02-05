@@ -27,6 +27,14 @@ namespace VolosCodex.Api.Controllers
             return Ok();
         }
 
+        [HttpPut("log/{logId}")]
+        public async Task<IActionResult> UpdateLog(Guid logId, [FromBody] UpdateLogRequest request)
+        {
+            // Anyone can edit logs for now, similar to adding logs
+            await _sessionService.UpdateLogAsync(logId, request.CharacterName, request.Action, request.Amount);
+            return Ok();
+        }
+
         [HttpPost("end")]
         [Authorize]
         public async Task<IActionResult> EndSession([FromBody] EndSessionRequest request)

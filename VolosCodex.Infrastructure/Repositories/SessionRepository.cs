@@ -81,6 +81,17 @@ namespace VolosCodex.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<SessionLog?> GetLogByIdAsync(Guid id)
+        {
+            return await _context.SessionLogs.FindAsync(id);
+        }
+
+        public async Task UpdateLogAsync(SessionLog log)
+        {
+            _context.SessionLogs.Update(log);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteLogAsync(Guid id)
         {
             var log = await _context.SessionLogs.FindAsync(id);
